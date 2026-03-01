@@ -7,6 +7,11 @@ Rails.application.routes.draw do
 
   # API endpoints
   resources :users, only: [ :index ]
+  resources :recipes, only: [ :index ] do
+    collection do
+      post :import
+    end
+  end
 
   # Defines the root path route ("/")
   # root "posts#index"

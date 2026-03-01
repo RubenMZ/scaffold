@@ -24,3 +24,10 @@ bundle install
 bin/rails db:create db:migrate
 bin/rails server
 ```
+
+### Running specs
+
+```bash
+cd backend
+bundle exec rspec
+```
