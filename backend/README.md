@@ -1,24 +1,48 @@
-# README
+# Backend — Rails API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Rails 8.1 API-only application with PostgreSQL.
 
-Things you may want to cover:
+## Setup
 
-* Ruby version
+```bash
+bundle install
+bin/rails db:create db:migrate db:seed
+bin/rails server
+```
 
-* System dependencies
+## Testing
 
-* Configuration
+The project uses **RSpec** for testing. Specs live in the `spec/` directory.
 
-* Database creation
+```bash
+# Run all specs
+bundle exec rspec
 
-* Database initialization
+# Run model specs only
+bundle exec rspec spec/models
 
-* How to run the test suite
+# Run request specs only
+bundle exec rspec spec/controllers
 
-* Services (job queues, cache servers, search engines, etc.)
+# Run a specific spec file
+bundle exec rspec spec/models/user_spec.rb
+```
 
-* Deployment instructions
+### Spec structure
 
-* ...
+```
+spec/
+├── controllers/
+│   └── users_controller_spec.rb  # UsersController specs
+├── models/
+│   └── user_spec.rb              # User model validations
+├── rails_helper.rb
+└── spec_helper.rb
+```
+
+### First-time test DB setup
+
+```bash
+bin/rails db:create RAILS_ENV=test
+RAILS_ENV=test bin/rails db:schema:load
+```
