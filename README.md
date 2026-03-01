@@ -20,15 +20,33 @@ scaffold/
 
 ### 1. Backend (Rails API)
 
+**Install PostgreSQL** (if not already installed):
+
+```bash
+# macOS (Homebrew)
+brew install postgresql@16
+brew services start postgresql@16
+
+# Ubuntu / Debian
+sudo apt update && sudo apt install -y postgresql postgresql-contrib
+sudo systemctl start postgresql
+```
+
+**Configure database credentials:**
+
 ```bash
 cd backend
+cp .env.example .env   # then edit .env with your Postgres user/password
+```
 
+Open `.env` and set `POSTGRES_USER` and `POSTGRES_PASSWORD` to match your local PostgreSQL superuser (on macOS/Homebrew the default user is your macOS username with no password; on Linux it is `postgres`).
+
+> **Tip – macOS Homebrew default setup (no password needed):**  
+> Leave `POSTGRES_PASSWORD` empty and set `POSTGRES_USER` to your macOS username, e.g. `ruben.medina`.
+
+```bash
 # Install dependencies
 bundle install
-
-# Configure database
-# Edit config/database.yml if needed (username/password/host)
-# Or set the DATABASE_URL environment variable
 
 # Create and migrate the database
 bin/rails db:create db:migrate
@@ -61,7 +79,11 @@ API requests to the Rails backend at `http://localhost:3001`.
 
 | Variable | Default | Description |
 |---|---|---|
-| `DATABASE_URL` | *(see database.yml)* | PostgreSQL connection URL |
+| `POSTGRES_USER` | *(OS user)* | PostgreSQL username |
+| `POSTGRES_PASSWORD` | *(empty)* | PostgreSQL password |
+| `POSTGRES_HOST` | `localhost` | PostgreSQL host |
+| `POSTGRES_PORT` | `5432` | PostgreSQL port |
+| `POSTGRES_DB` | `backend_development` | Database name (development) |
 | `CORS_ORIGINS` | `http://localhost:3000` | Allowed CORS origins |
 | `RAILS_MASTER_KEY` | *(see config/master.key)* | Rails credentials master key |
 
