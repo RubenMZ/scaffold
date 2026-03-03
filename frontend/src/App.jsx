@@ -1,24 +1,23 @@
-import { useState } from "react";
-import UsersList from "./components/UsersList";
-import RecipeImporter from "./components/RecipeImporter";
-import RecipesList from "./components/RecipesList";
+import { useMemo, useState } from "react";
+import AdminPage from "./pages/AdminPage";
+import HomePage from "./pages/HomePage";
 
 function App() {
   const [refreshKey, setRefreshKey] = useState(0);
+  const isAdminRoute = useMemo(
+    () => window.location.pathname.startsWith("/admin"),
+    []
+  );
 
   const handleImportComplete = () => {
     setRefreshKey((prev) => prev + 1);
   };
 
-  return (
-    <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-      <RecipeImporter onImportComplete={handleImportComplete} />
-      <div className="mb-12">
-        <RecipesList key={refreshKey} />
-      </div>
-      <UsersList />
-    </div>
-  );
+  if (isAdminRoute) {
+    return <AdminPage onImportComplete={handleImportComplete} />;
+  }
+
+  return <HomePage refreshKey={refreshKey} />;
 }
 
 export default App;

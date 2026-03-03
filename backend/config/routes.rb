@@ -7,6 +7,8 @@ Rails.application.routes.draw do
 
   # API endpoints
   resources :users, only: [ :index ]
+  resources :categories, only: [ :index ]
+  resources :ingredients, only: [ :index ]
   resources :recipes, only: [ :index ] do
     collection do
       post :import
