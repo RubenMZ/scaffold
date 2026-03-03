@@ -68,10 +68,10 @@ class RecipeImporter
   end
 
   def import_users
-    # Extract all unique authors (excluding deleteduser)
+    # Extract all unique authors (excluding deleted/blank entries)
     unique_authors = @data.map { |r| r["author"] }
                           .compact
-                          .reject { |a| a.blank? || a == "deleteduser" }
+                          .reject { |a| skip_author?(a) }
                           .uniq
 
     return if unique_authors.empty?
@@ -160,7 +160,7 @@ class RecipeImporter
 
     recipe_records = valid_recipes.map do |recipe_data|
       category_id = @categories_map[recipe_data["category"].strip]
-      user_id = @users_map[recipe_data["author"]] if recipe_data["author"] != "deleteduser"
+      user_id = @users_map[recipe_data["author"]] unless skip_author?(recipe_data["author"])
       image_url = parse_image_url(recipe_data["image"])
 
       {
@@ -182,6 +182,10 @@ class RecipeImporter
       all_ids.concat(result.rows.flatten)
     end
     all_ids
+  end
+
+  def skip_author?(author)
+    author.blank? || author == "deleteduser" || author == "Deleted Account"
   end
 
   def parse_image_url(value)
